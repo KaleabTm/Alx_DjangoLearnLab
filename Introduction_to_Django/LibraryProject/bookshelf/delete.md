@@ -1,8 +1,10 @@
 from bookshelf.models import Book
 
 # Delete the book instance
-deleted = Book.objects.filter(title="Nineteen Eighty-Four").delete()
-print(f"Deleted {deleted} book(s).")
+book = Book.objects.get(title="Nineteen Eighty-Four")
+# Delete the book instance
+book.delete()  # Delete the book
+print("Book deleted successfully.")
 
 # Confirm deletion by trying to retrieve all books
 b = Book.objects.all()
