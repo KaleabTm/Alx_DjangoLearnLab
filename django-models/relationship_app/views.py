@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from .models import Book
 from .models import Library
 from django.views.generic.detail import DetailView
@@ -76,25 +76,29 @@ def member_view(request):
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
 
-@permission_required('can_add_book')
+@permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):
-    book = Book.objects.create(title=request.title, author=request.author)
-    book.save()
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        book = Book.objects.create(title=title, author=author)
+        book.save()
     return redirect('book_list')
 
-@permission_required('can_delete_book')
-def delete_book(request):
-    book = Book.objects.get(title=request.title, author=request.author)
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request,id):
+    book = Book.objects.get(id=id)
     book.delete()
     return redirect('book_list')
 
 
-@permission_required('can_change_book')
+@permission_required('relationship_app.can_change_book', raise_exception=True)
 def edit_book(request):
-    book = Book.objects.get(title=request.title, author=request.author)
-    book.title = "new"
-    book.author = "new"
-    book.save()
+    book = get_object_or_404(Book, pk=id)
+    if request.method == 'POST':
+        book.title = request.POST.get('title')
+        book.author = request.POST.get('author')
+        book.save()
     return redirect('book_list')
 
 
