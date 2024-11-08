@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Book
 from .models import Library
 from django.views.generic.detail import DetailView
@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.contrib.auth import logout
+from django.views.generic import TemplateView
 
 # Create your views here.
 def list_books(request):
@@ -21,27 +22,30 @@ class LibraryDetailView(DetailView):
     template_name='relationship_app/library_detail.html'
     context_object_name = 'library' 
 
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+        else:
+            form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
+        
 
+class LoginView(LoginView):
+    def login_view(request):
+        if request.method == "POST":
+           form = AuthenticationForm(request, data=request.POST)
+           if form.is_valid():
+               login(request, form.get_user())
+               return redirect('register')
+           else:
+               form = AuthenticationForm()
+        return render(request, {'form': form})
+        
 
-class UserRegisterView(CreateView):
-    form = UserCreationForm()
-    template_name = 'relationship_app/register.html'
-    success_url = '/login/'
-
-# class UserLoginView(LoginView):
-#     form = AuthenticationForm()
-#     template_name = 'relationship_app/login.html'
-
-
-def login_view(request):
-    form = AuthenticationForm()
-    user = (request, form.get_user())
-    template_name = 'relationship_app/login.html'
-    if user is not None:
-        login(request, user)
-    else:
-        ...
-
-class UserLogoutView(LogoutView):
-    template_name = 'relationship_app/logout.html'
-    logout()
+class LogoutView(LogoutView):
+    def logout_view(request):
+        logout(request)
+        return redirect('register')
