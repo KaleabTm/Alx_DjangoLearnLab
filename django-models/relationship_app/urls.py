@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import list_books, LibraryDetailView, register, LoginView, LogoutView, admin, member, librarian
+from .views import list_books, LibraryDetailView, register, LoginView, LogoutView,  AdminView, member, librarian
 from .views import *
 
 
@@ -7,7 +7,7 @@ url_patterns = [
     path('booklist/',list_books),
     path('librarydetail/', LibraryDetailView.as_view()),
     path('register/', register),
-    path('admin/', admin),
+    path('admin/', AdminView.as_view()),
     path('member/', member),
     path('librarian/',librarian),
     path('login/', LoginView.as_view(template_name="relationship_app/login.html")),

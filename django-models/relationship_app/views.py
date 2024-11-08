@@ -2,12 +2,11 @@ from django.shortcuts import redirect, render
 from .models import Book
 from .models import Library
 from django.views.generic.detail import DetailView
-from django.views.generic import CreateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.contrib.auth import logout
-from django.views.generic import TemplateView
 from django.contrib.auth.decorators import user_passes_test
 
 
@@ -65,8 +64,9 @@ def is_member(user):
 
 
 @user_passes_test(is_admin)
-def admin(request):
-    return ('This user is admin')
+class AdminView(ListView):
+    def admin(request):
+        return ('This user is admin')
 
 
 @user_passes_test(is_librarian)
