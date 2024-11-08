@@ -8,6 +8,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import user_passes_test
+
+
 
 # Create your views here.
 def list_books(request):
@@ -49,3 +52,30 @@ class LogoutView(LogoutView):
     def logout_view(request):
         logout(request)
         return redirect('register')
+    
+
+def is_admin(user):
+    return user.userprofile.role == 'Admin'
+
+def is_librarian(user):
+    return user.userprofile.role == 'Librarian'
+
+def is_member(user):
+    return user.userprofile.role == 'Member'
+
+
+@user_passes_test(is_admin)
+def admin(request):
+    return ('This user is admin')
+
+
+@user_passes_test(is_librarian)
+def librarian(request):
+    return ('This user is librarian')
+
+
+
+@user_passes_test(is_member)
+def member(request):
+    return ('This user is member')
+
