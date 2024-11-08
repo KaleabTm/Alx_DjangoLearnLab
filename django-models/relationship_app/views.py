@@ -2,13 +2,11 @@ from django.shortcuts import redirect, render
 from .models import Book
 from .models import Library
 from django.views.generic.detail import DetailView
-from django.views.generic import CreateView
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.contrib.auth import logout
-from django.views.generic import TemplateView
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, permission_required
 
 
 
@@ -77,4 +75,26 @@ def member_view(request):
 @user_passes_test(is_librarian)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
+
+@permission_required('can_add_book')
+def add_book(request):
+    book = Book.objects.create(title=request.title, author=request.author)
+    book.save()
+    return redirect('book_list')
+
+@permission_required('can_delete_book')
+def delete_book(request):
+    book = Book.objects.get(title=request.title, author=request.author)
+    book.delete()
+    return redirect('book_list')
+
+
+@permission_required('can_change_book')
+def edit_book(request):
+    book = Book.objects.get(title=request.title, author=request.author)
+    book.title = "new"
+    book.author = "new"
+    book.save()
+    return redirect('book_list')
+
 

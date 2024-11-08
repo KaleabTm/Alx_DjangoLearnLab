@@ -9,8 +9,9 @@ url_patterns = [
     path('admin/', admin_view),
     path('member/', member_view),
     path('librarian/',librarian_view),
+    path('librarian/', add_book),
+    path('librarian/',delete_book),
+    path('librarian/',edit_book),
     path('login/', LoginView.as_view(template_name="relationship_app/login.html")),
     path('logout/', LogoutView.as_view(template_name="relationship_app/logout.html")),
 ]
-
-# "views.register", "LogoutView.as_view(template_name=", "LoginView.as_view(template_name="
