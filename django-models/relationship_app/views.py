@@ -64,9 +64,9 @@ def is_member(user):
 
 
 @user_passes_test(is_admin)
-class AdminView(ListView):
+class Admin(ListView):
     def admin(request):
-        return ('This user is admin')
+        return (request,'<h1>Admin View</h1>')
 
 
 @user_passes_test(is_librarian)
