@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView
 
 
 # Create your views here.
-def list_book(request):
+def list_books(request):
     book = Book.objects.all()
     context = {
         'book':book
