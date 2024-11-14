@@ -9,7 +9,7 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-class UserManager(UserManager):
+class CustomUserManager(UserManager):
     def create_user(self, name, password):
 
         if not name:
@@ -35,12 +35,12 @@ class UserManager(UserManager):
 
 
     
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     name = models.CharField(unique=True, max_length=100)
     date_of_birth= models.DateField()
     profile_photo= models.ImageField()
 
-    objects=UserManager()
+    objects=CustomUserManager()
 
     USERNAME_FIELD = "name"
     REQUIRED_FIELDS = []
