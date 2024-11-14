@@ -1,44 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
-
-class UserManager(UserManager):
-    def create_user(self, name, password):
-
-        if not name:
-            raise ValueError("pleals insert your name")
-        if not password:
-            raise ValueError("please insert your password")
-        
-        user = self.model(name=name)
-        user.set_password(password)
-        user.save(using=self.__db)
-
-        return user
-    
-
-    def create_superuser(self,name,password):
-
-        user=self.create_user(name,password)
-        user.is_stuff=True
-        user.is_superuser=True
-        user.save(using=self._db)
-
-        return user
-
-
-    
-class User(AbstractUser):
-    name = models.CharField(unique=True, max_length=100)
-    date_of_birth= models.DateField()
-    profile_photo= models.ImageField()
-
-    objects=UserManager()
-
-    USERNAME_FIELD = "name"
-    REQUIRED_FIELDS = []
+# from django.contrib.auth.models import User
+from bookshelf.models import User
 
 # Create your models here.
-class Author(User):
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+
     def __str__(self):
         return self.name
 
@@ -63,7 +30,8 @@ class Library(models.Model):
         return self.name
 
 
-class Librarian(User):
+class Librarian(models.Model):
+    name = models.CharField(max_length=100)
     library = models.OneToOneField(Library, on_delete=models.CASCADE)
 
     def __str__(self):
