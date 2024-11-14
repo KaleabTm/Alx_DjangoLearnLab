@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 # Create your models here.
 class Book(models.Model):
     title = models.CharField(max_length=200)
@@ -9,7 +9,7 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-class CustomUserManager(UserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, name, password):
 
         if not name:
