@@ -8,10 +8,9 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.contrib.auth.decorators import permission_required
-from django.views.decorators.csrf import csrf_exempt
 
 
-@csrf_exempt
+
 # Create your views here.
 def list_books(request):
     book = Book.objects.all()
@@ -25,7 +24,6 @@ class LibraryDetailView(DetailView):
     template_name='relationship_app/library_detail.html'
     context_object_name = 'library' 
 
-@csrf_exempt
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -55,7 +53,6 @@ class LogoutView(LogoutView):
         return redirect('register')
     
 
-
 def is_admin(user):
     return user.userprofile.role == 'Admin'
 
@@ -66,24 +63,20 @@ def is_member(user):
     return user.userprofile.role == 'Member'
 
 
-@csrf_exempt
 @user_passes_test(is_admin)
 def admin_view(request):
     return render(request, 'relationship_app/admin_view.html')
 
 
-@csrf_exempt
 @user_passes_test(is_member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
 
 
-@csrf_exempt
 @user_passes_test(is_librarian)
 def librarian_view(request):
     return render(request, 'relationship_app/librarian_view.html')
 
-@csrf_exempt
 @permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):
     if request.method == 'POST':
@@ -93,8 +86,6 @@ def add_book(request):
         book.save()
     return redirect('book_list')
 
-
-@csrf_exempt
 @permission_required('relationship_app.can_delete_book', raise_exception=True)
 def delete_book(request,id):
     book = Book.objects.get(id=id)
@@ -102,7 +93,6 @@ def delete_book(request,id):
     return redirect('book_list')
 
 
-@csrf_exempt
 @permission_required('relationship_app.can_change_book', raise_exception=True)
 def edit_book(request):
     book = get_object_or_404(Book, pk=id)
