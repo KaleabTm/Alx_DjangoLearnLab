@@ -131,12 +131,16 @@ AUTH_USER_MODEL = "bookshelf.CustomUser"
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-SECURE_BROWSER_XSS_FILTER = True  # Enables XSS filtering in browsers
-SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents browsers from guessing content types
-X_FRAME_OPTIONS = 'DENY'  # Prevents the site from being loaded in iframes
+SECURE_BROWSER_XSS_FILTER = True  
+SECURE_CONTENT_TYPE_NOSNIFF = True  
+X_FRAME_OPTIONS = 'DENY'  
 
+SECURE_SSL_REDIRECT= True 
+SECURE_HSTS_SECONDS = 31536000  
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
-CSP_DEFAULT_SRC = ["'self'"]  # Restrict to the current domain
-CSP_SCRIPT_SRC = ["'self'", 'cdnjs.cloudflare.com']  # Allow scripts from trusted domains
+CSP_DEFAULT_SRC = ["'self'"]  
+CSP_SCRIPT_SRC = ["'self'", 'cdnjs.cloudflare.com']
 CSP_STYLE_SRC = ["'self'", 'cdnjs.cloudflare.com']
 CSP_IMG_SRC = ["'self'", 'imgur.com']
