@@ -131,32 +131,12 @@ AUTH_USER_MODEL = "bookshelf.CustomUser"
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True  # Enables XSS filtering in browsers
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents browsers from guessing content types
+X_FRAME_OPTIONS = 'DENY'  # Prevents the site from being loaded in iframes
 
 
-
-from csp.constants import NONE, SELF
-
-CONTENT_SECURITY_POLICY = {
-    "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
-    "DIRECTIVES": {
-        "default-src": [SELF, "cdn.example.net"],
-        "frame-ancestors": [SELF],
-        "form-action": [SELF],
-        "report-uri": "/csp-report/",
-    },
-}
-
-CONTENT_SECURITY_POLICY_REPORT_ONLY = {
-    "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
-    "DIRECTIVES": {
-        "default-src": [NONE],
-        "connect-src": [SELF],
-        "img-src": [SELF],
-        "form-action": [SELF],
-        "frame-ancestors": [SELF],
-        "script-src": [SELF],
-        "style-src": [SELF],
-        "upgrade-insecure-requests": True,
-        "report-uri": "/csp-report/",
-    },
-}
+CSP_DEFAULT_SRC = ["'self'"]  # Restrict to the current domain
+CSP_SCRIPT_SRC = ["'self'", 'cdnjs.cloudflare.com']  # Allow scripts from trusted domains
+CSP_STYLE_SRC = ["'self'", 'cdnjs.cloudflare.com']
+CSP_IMG_SRC = ["'self'", 'imgur.com']
