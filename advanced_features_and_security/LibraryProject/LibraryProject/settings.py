@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%l57l%3u#8zja%(r*=40*q^_mtnr99ejdzagvg^ggea^a!mtr('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -39,9 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf.apps.BookshelfConfig',
     'relationship_app.apps.RelationshipAppConfig',
+    "csp",
 ]
 
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
+    "csp.middleware.CSPMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -125,3 +128,35 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "bookshelf.CustomUser"
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+
+
+from csp.constants import NONE, SELF
+
+CONTENT_SECURITY_POLICY = {
+    "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
+    "DIRECTIVES": {
+        "default-src": [SELF, "cdn.example.net"],
+        "frame-ancestors": [SELF],
+        "form-action": [SELF],
+        "report-uri": "/csp-report/",
+    },
+}
+
+CONTENT_SECURITY_POLICY_REPORT_ONLY = {
+    "EXCLUDE_URL_PREFIXES": ["/excluded-path/"],
+    "DIRECTIVES": {
+        "default-src": [NONE],
+        "connect-src": [SELF],
+        "img-src": [SELF],
+        "form-action": [SELF],
+        "frame-ancestors": [SELF],
+        "script-src": [SELF],
+        "style-src": [SELF],
+        "upgrade-insecure-requests": True,
+        "report-uri": "/csp-report/",
+    },
+}
