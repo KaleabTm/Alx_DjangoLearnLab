@@ -12,7 +12,7 @@ class BookListView(mixins.ListModelMixin,generics.ListAPIView):
     filter_backends = [rest_framework.DjangoFilterBackend]
     filterset_fields = ['title','author','publication_year']
     filters.OrderingFilter = ['publication_year',]
-    search_fields = ['title','author']
+    filters.SearchFilter = ['title','author']
 
 class BookCreateView(mixins.CreateModelMixin,generics.CreateAPIView):
     queryset = Book.objects.all()
