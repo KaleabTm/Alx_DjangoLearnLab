@@ -18,6 +18,14 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     publication_year = models.IntegerField()
 
+    class Meta:
+        filter = [
+            'author',
+            'title',
+            'publication_year'
+        ]
+        ordering = ['publication_year',]
+
     def __str__(self):
         return f"{self.title} written by {self.author} and published on {self.publication_year}"
 
