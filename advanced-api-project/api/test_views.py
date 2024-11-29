@@ -1,5 +1,5 @@
 from django.test import RequestFactory, TestCase
-
+from rest_framework import status
 from api.models import Author, Book
 from .views import BookListView, BookCreateView, BookDeleteView, BookDetailView, BookUpdateView
 from rest_framework.test import force_authenticate
@@ -26,7 +26,7 @@ class APITestCase(TestCase):
         view = BookListView.as_view()
 
         response = view(request)
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
 
     def test_create_book(self):
         # test to create a book
@@ -44,7 +44,7 @@ class APITestCase(TestCase):
 
         response = view(request)
 
-        self.assertEqual(201, response.status_code)
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertIn("New Book", response.data['title']) 
 
 
@@ -75,7 +75,7 @@ class APITestCase(TestCase):
 
         response = view(request, pk=self.book.id)
 
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(response.data['title'],"Old Book")
 
     def test_detele_book(self):
@@ -88,7 +88,7 @@ class APITestCase(TestCase):
 
         response = view(request, pk=self.book.id)
 
-        self.assertEqual(204, response.status_code)
+        self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code)
 
 
 
