@@ -1,5 +1,5 @@
 from rest_framework import generics
-import django_filters.rest_framework
+from django_filters import rest_framework
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .serializers import BookSerializer
 from .models import Book
@@ -9,7 +9,7 @@ class BookListView(mixins.ListModelMixin,generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_backends = [rest_framework.DjangoFilterBackend]
     filterset_fields = ['title','author','publication_year']
     search_fields = ['title','author']
     ordering = ['publication_year',]
