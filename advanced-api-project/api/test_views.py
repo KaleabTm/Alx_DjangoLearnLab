@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 
 # Create your tests here.
-class TestViews(TestCase):
+class APITestCase(TestCase):
     def setUp(self):
         # Set up a test user, Author, Book and factory
         self.user = User.objects.create_user(username="testuser", password="password123")
