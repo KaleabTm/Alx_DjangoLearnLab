@@ -3,9 +3,9 @@ from django_filters import rest_framework, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .serializers import BookSerializer
 from .models import Book
-from rest_framework import mixins
 
-class BookListView(mixins.ListModelMixin,generics.ListAPIView):
+
+class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -14,7 +14,7 @@ class BookListView(mixins.ListModelMixin,generics.ListAPIView):
     filters.OrderingFilter = ['publication_year',]
     filters.SearchFilter = ['title','author']
 
-class BookCreateView(mixins.CreateModelMixin,generics.CreateAPIView):
+class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
