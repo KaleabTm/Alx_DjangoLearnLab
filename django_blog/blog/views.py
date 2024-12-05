@@ -7,15 +7,15 @@ from django.contrib.auth import login
 
 # Create your views here.
 class Login(LoginView):
-    template_name='registration/login.html'
+    template_name='login.html'
 
 class Logout(LogoutView):
-    template_name='registration/logout.html'
+    template_name='logout.html'
 
 
 class UserRegister(CreateView):
     form_class = UserCreatetion  
-    template_name = 'registration/register.html'  
+    template_name = 'register.html'  
     success_url = '/profile/'
 
     def form_valid(self, form):
@@ -27,4 +27,4 @@ class UserRegister(CreateView):
 
 @login_required
 def profile(request):
-    return render(request, 'registration/profile.html', {'user': request.user})
+    return render(request, 'profile.html', {'user': request.user})
