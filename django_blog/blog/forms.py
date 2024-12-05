@@ -13,4 +13,8 @@ class UserCreatetion(UserCreationForm):
             'password1',
             'password2'
         ]
-    
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
