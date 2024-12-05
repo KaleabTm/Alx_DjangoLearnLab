@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% block content %}
   <h2>Welcome, {{ user.username }}!</h2>
   <p>Email: {{ user.email }}</p>
