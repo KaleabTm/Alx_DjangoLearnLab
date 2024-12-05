@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView
-from .forms import UserCreatetion
+from .forms import ProfileUpdateForm, UserCreatetion
 from django.contrib.auth.views import LoginView, LogoutView 
 from django.contrib.auth import login
 
@@ -13,18 +13,25 @@ class Logout(LogoutView):
     next_page='login/'
 
 
-class UserRegister(CreateView):
-    form_class = UserCreatetion  
-    template_name = 'blog/register.html'  
-    success_url = '/profile/'
-
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return redirect(self.success_url)
+def register(request):
+    if request.method == 'POST':
+        form = UserCreatetion(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreatetion()
+    return render(request, 'auth/register.html', {'form': form})
   
 
 
 @login_required
 def profile(request):
-    return render(request, 'blog/profile.html', {'user': request.user})
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+    return render(request, 'auth/profile.html', {'form': form})
