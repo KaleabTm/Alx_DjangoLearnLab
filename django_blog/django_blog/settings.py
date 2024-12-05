@@ -120,7 +120,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
 STATICFILES_DIR = [
     BASE_DIR / 'blog/static',
 ]
