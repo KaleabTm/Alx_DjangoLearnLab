@@ -15,7 +15,7 @@ class Logout(LogoutView):
 
 class UserRegister(CreateView):
     form_class = UserCreatetion  
-    template_name = 'registration.html'  
+    template_name = 'register.html'  
     success_url = '/profile/'
 
     def form_valid(self, form):
