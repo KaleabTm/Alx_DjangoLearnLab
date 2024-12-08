@@ -1,3 +1,4 @@
+from tokenize import Comment
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models  import User
@@ -34,3 +35,12 @@ class PostCreationForm(forms.ModelForm):
             if not self.content:
                 raise forms.ValidationError("content could not be empty")
             
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 3}),
+        }
