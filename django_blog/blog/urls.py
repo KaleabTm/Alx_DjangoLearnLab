@@ -1,6 +1,7 @@
 # urls.py
 from django.urls import path
-from .views import Login, Logout, register, profile, PostCreateView, PostDeleteView, PostDetailView, PostListView, PostUpdateView, CommentCreateView, CommentUpdateView, CommentDeleteView
+from .views import Login, Logout, register, profile, PostCreateView, PostDeleteView, PostDetailView, PostListView, PostUpdateView, CommentCreateView, CommentUpdateView, CommentDeleteView, search_posts, posts_by_tag
+
 
 urlpatterns = [
     path('login/', Login.as_view(), name='login'),
@@ -13,8 +14,9 @@ urlpatterns = [
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),  
     path('post/<int:pk>/edit/', PostUpdateView.as_view(), name='post-edit'),  
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
-    path('posts/<int:post_id>/comment/new/', CommentCreateView.as_view(), name='comment-add'),
-    path('comment/<int:pk>/edit/', CommentUpdateView.as_view(), name='comment-update'),
+    path('posts/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='comment-add'),
+    path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
-     
+    path('search/', search_posts, name='search-posts'),
+    path('tags/<str:tag_name>/', posts_by_tag, name='posts-by-tag')     
 ]

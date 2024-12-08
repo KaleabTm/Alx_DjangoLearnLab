@@ -5,7 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment
 from .forms import ProfileUpdateForm, UserCreatetion, CommentForm
 from django.contrib.auth.views import LoginView, LogoutView 
-
+from django.db.models import Q
+from taggit.models import Tag
 # Create your views here.
 class Login(LoginView):
     template_name='blog/login.html'
@@ -122,3 +123,19 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+
+def search_posts(request):
+    query = request.GET.get('q')
+    results = Post.objects.all()
+    if query:
+        results = results.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    return render(request, 'blog/post_list.html', {'results': results, 'query': query})
+
+def posts_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = Post.objects.filter(tags__in=[tag])
+    return render(request, 'blog/posts_by_tag.html', {'tag': tag, 'posts': posts})

@@ -25,7 +25,7 @@ class ProfileUpdateForm(forms.ModelForm):
 class PostCreationForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'author','published_date']
+        fields = ['title', 'content', 'author','published_date', 'tags']
 
         def clean_title(self):
             if not self.title:
