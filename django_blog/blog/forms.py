@@ -1,8 +1,7 @@
-from tokenize import Comment
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models  import User
-from .models import Post
+from .models import Post, Comment
 
 
 class UserCreatetion(UserCreationForm):
@@ -25,7 +24,7 @@ class ProfileUpdateForm(forms.ModelForm):
 class PostCreationForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'author','published_date', 'tags']
+        fields = ['title', 'content', 'author', 'tags']
 
         def clean_title(self):
             if not self.title:
@@ -40,7 +39,7 @@ class PostCreationForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['content']
+        fields = ['content',]
         widgets = {
             'content': forms.Textarea(attrs={'rows': 3}),
         }

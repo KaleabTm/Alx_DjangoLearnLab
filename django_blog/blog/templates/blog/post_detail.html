@@ -3,6 +3,13 @@
 <h1>{{ object.title }}</h1>
 <p>By {{ object.author }} on {{ object.date_posted }}</p>
 <p>{{ object.content }}</p>
+<p>Tags: 
+    {% for tag in object.tags.all %}
+        <a href="{% url 'posts-by-tag' tag.name %}">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
+
+
 {% if user == object.author %}
     <a href="{% url 'post-update' object.id %}">Edit</a>
     <a href="{% url 'post-delete' object.id %}">Delete</a>

@@ -17,6 +17,12 @@
             <a href="{% url 'logout' %}">Logout</a>
         </nav>
     </header>
+
+    <form action="{% url 'search-posts' %}" method="get" class="search-bar">
+        <input type="text" name="q" placeholder="Search posts...">
+        <button type="submit">Search</button>
+    </form>
+    
     <main>
         {% block content %}{% endblock %}
     </main>

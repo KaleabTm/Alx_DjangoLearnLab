@@ -85,20 +85,15 @@ class PostDetailView(DetailView):
 
 
 
-@login_required
-class CommentCreateView(CreateView):
-    def post(self, request, post_id):
-        post = get_object_or_404(Post, id=post_id)
-        form = CommentForm(request.POST)
-        if form.is_valid():
-                comment = form.save(commit=False)
-                comment.post = post
-                comment.author = request.user
-                comment.save()
-                return redirect('post-detail', pk=post_id)
-        else:
-            form = CommentForm()
-        return render(request, 'blog/comment_form.html', {'form': form})
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+        template_name = 'blog/comment_form.html'
+        
+        def form_valid(self, form):
+            form.instance.author = self.request.user
+            return super().form_valid(form)
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
@@ -106,6 +101,7 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'blog/comment_form.html'
 
     def form_valid(self, form):
+        post = get_object_or_404(Post, id=self.post.id)
         form.instance.author = self.request.user
         return super().form_valid(form)
 
