@@ -20,15 +20,16 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email']
-        widgets = {
-            'tags': TagWidget(attrs={'class': 'form-control'}),
-        }
+
 
 
 class PostCreationForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'author', 'tags']
+        widgets = {
+            'tags': TagWidget(attrs={'class': 'form-control'}),
+        }
 
         def clean_title(self):
             if not self.title:
