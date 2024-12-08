@@ -28,7 +28,7 @@ class PostCreationForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content', 'author', 'tags']
         widgets = {
-            'tags': TagWidget(attrs={'class': 'form-control'}),
+            'tags': TagWidget(),
         }
 
         def clean_title(self):
