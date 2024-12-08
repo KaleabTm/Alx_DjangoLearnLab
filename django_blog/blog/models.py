@@ -11,3 +11,9 @@ class Post(models.Model):
     def __str__(self):
         return f"{self.title} by {self.author}"
 
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    content = models.TextField()
+    
+    ...
