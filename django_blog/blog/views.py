@@ -85,19 +85,19 @@ class PostDetailView(DetailView):
 
 
 @login_required
-def add_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    if request.method == 'POST':
+class CommentCreateView(CreateView):
+    def post(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
         form = CommentForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-            return redirect('post-detail', pk=post_id)
-    else:
-        form = CommentForm()
-    return render(request, 'blog/comment_form.html', {'form': form})
+                comment = form.save(commit=False)
+                comment.post = post
+                comment.author = request.user
+                comment.save()
+                return redirect('post-detail', pk=post_id)
+        else:
+            form = CommentForm()
+        return render(request, 'blog/comment_form.html', {'form': form})
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
