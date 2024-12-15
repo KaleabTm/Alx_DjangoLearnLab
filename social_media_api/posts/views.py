@@ -40,8 +40,7 @@ class FeedView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Get all posts by followed users
-        followed_users = request.user.following.all()
-        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
+        following_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
