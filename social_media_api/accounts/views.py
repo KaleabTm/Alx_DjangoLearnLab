@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
-from rest_framework import status, generics
+from rest_framework import status, permissions, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -40,7 +40,7 @@ class ProfileView(APIView):
 
 
 class FollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = CustomUser.objects.all()  
 
     def post(self, request, user_id):
@@ -53,7 +53,7 @@ class FollowUserView(generics.GenericAPIView):
 
 
 class UnfollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = CustomUser.objects.all()
 
     def post(self, request, user_id):
