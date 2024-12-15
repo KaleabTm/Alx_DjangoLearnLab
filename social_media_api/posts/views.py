@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions
 from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
-from rest_framework import filters, status
+from rest_framework import filters, status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -52,7 +52,7 @@ class LikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.filter(pk=pk).first()
+        post = generics.get_object_or_404(Post, pk=pk)
         if not post:
             return Response({"detail": "Post not found."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -76,7 +76,7 @@ class UnlikePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
-        post = Post.objects.filter(pk=pk).first()
+        post = generics.get_object_or_404(Post, pk=pk)
         if not post:
             return Response({"detail": "Post not found."}, status=status.HTTP_404_NOT_FOUND)
 
