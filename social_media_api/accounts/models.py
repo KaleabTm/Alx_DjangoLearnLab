@@ -10,7 +10,7 @@ class CustomUser(AbstractUser):
     password = models.CharField(max_length=200)
     bio = models.TextField()
     profile_picture = models.ImageField(upload_to='profile_pics/',blank=True, null=True)
-    followers = models.ManyToManyField('self',symmetrical=False)
+    followers = models.ManyToManyField('self', symmetrical=False, related_name='following', blank=True)
     username=None
 
     USERNAME_FIELD = 'email'
